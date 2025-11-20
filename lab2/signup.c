@@ -65,7 +65,11 @@ void main_loop(int server_fd, const sigset_t *origSigMask) {
 
         if (accepted_client_fd != -1) {
             FD_SET(accepted_client_fd, &fds); 
-            max_fd = (server_fd > accepted_client_fd) ? server_fd : accepted_client_fd;
+            if (server_fd > accepted_client_fd) {
+                max_fd = server_fd;
+            } else {
+                max_fd = accepted_client_fd;
+            }
         } else {
             max_fd = server_fd;
         }
